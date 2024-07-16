@@ -1,4 +1,5 @@
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Human {
@@ -20,7 +21,12 @@ public class Human {
         this.dateOfBirth = LocalDate.of(yearOfBirth, monthOfBirth, dayOfBirth);
     }
 
-    public String getName () {
+    Human() {
+        this.id = count;
+        count++;
+    }
+
+    public String getName() {
         return this.name;
     }
 
@@ -30,14 +36,14 @@ public class Human {
         if (this.dateOfDeath == null) {
             LocalDate now = LocalDate.now();
             age = now.compareTo(this.dateOfBirth);
-        }   else {
+        } else {
             age = dateOfDeath.compareTo(dateOfBirth);
         }
 
         return age;
     }
 
-    public void setDateOfDeath (int year, int month, int day) {
+    public void setDateOfDeath(int year, int month, int day) {
         this.dateOfDeath = LocalDate.of(year, month, day);
     }
 
@@ -47,6 +53,10 @@ public class Human {
         } else {
             return "не в браке";
         }
+    }
+
+    public Human getSpouse() {
+        return this.spouse;
     }
 
     public void setSpouse(Human spouse) {
@@ -61,7 +71,12 @@ public class Human {
         }
     }
 
+    public List<Human> getParents() {
+        return this.parents;
+    }
+
     public void setParents(Human father, Human mother) {
+        this.parents = new ArrayList<Human>();
         this.parents.add(father);
         this.parents.add(mother);
     }
@@ -78,7 +93,12 @@ public class Human {
         }
     }
 
+    public List<Human> getChildren() {
+        return this.children;
+    }
+
     public void setChild(Human child) {
+        this.children = new ArrayList<>();
         this.children.add(child);
     }
 
@@ -88,7 +108,7 @@ public class Human {
 
         result += String.format("id: %d", this.id);
         result += String.format(", name: %s", getName());
-        
+
         if (gender == Gender.Male) {
             result += ", gender: муж";
         } else {
@@ -100,5 +120,16 @@ public class Human {
         result += String.format(", parents: %s", getParentsNames());
         result += String.format(", children: %s", getChildrenNames());
         return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        var e = (Human) obj;
+        return this.id == e.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return this.id;
     }
 }
